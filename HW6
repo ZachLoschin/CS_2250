@@ -1,0 +1,94 @@
+/******************************************************************************
+Zachary Loschinskey
+CMP_SCI 2250, HW6
+7/25/2022
+
+Description: Uses an STL stack to check if a user inputed list of brackets
+and parenthesis are nested properly.
+*******************************************************************************/
+
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cstring>
+using namespace std;
+
+int main()
+{
+    // Create array for user string storage
+    string userStr;
+    
+    // Create a stack for holding values
+    stack<char> stak;
+    
+    bool loopVar = true;
+    
+    while(loopVar){
+        // Prompt user to enter string
+        cout << "Enter parenthesis and/or braces: " << endl;
+        
+        // Get the user string
+        getline(cin, userStr);
+        
+        // Get size of string for character array creation
+        int size = userStr.size();
+        char array[size + 1];
+        
+        // Convert the string to a character array for reading into queue 
+        strcpy(array, userStr.c_str());
+        
+        bool nestedProperly = true;
+        
+        // Loop through array
+        for(int i=0; i<size+1; i++){
+            
+            // If character is an opening paren or brace add to stack
+            if(array[i] == '{' || array[i] == '('){
+                stak.push(array[i]);
+                
+                // Else if end brace, check if top of stack is corresponding brace or parenth
+            } else if(array[i] == '}'){
+                if(stak.empty() || stak.top()!='{'){
+                    cout<<"Parenthesis/Braces not nested properly\n";
+                    nestedProperly = false;
+                    break;
+                }
+                
+            } else if(array[i] == ')'){
+                if(stak.empty() || stak.top()!='('){
+                    cout<<"Parenthesis/Braces not nested properly\n";
+                    nestedProperly = false;
+                    break;
+                }
+            }
+        } // end for loop
+        if(!stak.empty()){
+            cout<<"Parenthesis/Braces not nested properly\n";
+        }else if(nestedProperly==true){
+            cout<<"Parenthesis/Braces nested properly!\n";
+        }
+        
+        // promp user for continuation
+        
+        cout<<"Would you like to enter another? (y/n): ";
+        
+        // create continuation string 
+        string contStr;
+        
+        // Get the user string
+        getline(cin, contStr);
+        
+        // Get size of string for character array creation
+        int contSize = contStr.size();
+        char contArray[contSize + 1];
+        
+        // Convert the string to a character array for reading into queue 
+        strcpy(contArray, userStr.c_str());
+        
+        if(contArray[0] !=  'y' & contArray[0] != 'Y'){
+            loopVar = false;
+        }
+        
+    } // end while loop
+    
+} // end main
